@@ -1,0 +1,22 @@
+
+.code-editor-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .editor-toolbar {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: #1e1e1e;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .theme-selector {
+    background-color: #333;
+    color: white;
+    border: 1px solid #555;
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.9rem;
+  }

@@ -11,6 +11,7 @@ const signToken = (id) => {
 };
 
 // Create and send token with response
+// In auth.controller.js, modify createSendToken:
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
   
@@ -19,8 +20,8 @@ const createSendToken = (user, statusCode, res) => {
 
   res.status(statusCode).json({
     status: 'success',
-    token,
     data: {
+      token,
       user,
     },
   });

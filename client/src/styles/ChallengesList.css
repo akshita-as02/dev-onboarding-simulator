@@ -1,0 +1,96 @@
+.challenges-list-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+  }
+  
+  .challenges-header {
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .challenges-header h1 {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .challenges-header p {
+    color: var(--text-light);
+    max-width: 800px;
+  }
+  
+  .challenges-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    background-color: var(--card-bg);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .filter-group {
+    display: flex;
+    align-items: center;
+  }
+  
+  .filter-group label {
+    margin-right: var(--spacing-sm);
+    font-weight: 500;
+  }
+  
+  .filter-group select, .filter-group input {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    font-size: 0.9rem;
+  }
+  
+  .search-group {
+    flex-grow: 1;
+  }
+  
+  .search-group input {
+    width: 100%;
+  }
+  
+  .challenges-count {
+    margin-bottom: var(--spacing-lg);
+    color: var(--text-light);
+    font-size: 0.9rem;
+  }
+  
+  .challenges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+  }
+  
+  .no-challenges {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--spacing-xl);
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .no-challenges p {
+    margin-bottom: var(--spacing-md);
+    color: var(--text-light);
+  }
+  
+  .no-challenges button {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .no-challenges button:hover {
+    background-color: var(--primary-dark);
+  }

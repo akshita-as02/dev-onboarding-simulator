@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # MongoDB service
+  mongodb:
+    image: mongo:latest
+    container_name: devonboard-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - devonboard-network
+
+  # Backend service
+  backend:
+    build:
+      context: ../server
+      dockerfile: ../docker/server/Dockerfile
+    container_name: devonboard-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${SERVER_PORT}
+      MONGO_URI: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/${MONGO_INITDB_DATABASE}?authSource=admin
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    depends_on:
+      - mongodb
+    volumes:
+      - ../server:/app
+      - /app/node_modules
+    networks:
+      - devonboard-network
+
+  # Frontend service
+  frontend:
+    build:
+      context: ../client
+      dockerfile: ../docker/client/Dockerfile
+    container_name: devonboard-frontend
+    restart: unless-stopped
+    environment:
+      REACT_APP_API_URL: http://localhost:${SERVER_PORT}
+    ports:
+      - "${CLIENT_PORT}:80"
+    depends_on:
+      - backend
+    volumes:
+      - ../client:/app
+      - /app/node_modules
+    networks:
+      - devonboard-network
+
+networks:
+  devonboard-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+    driver: local

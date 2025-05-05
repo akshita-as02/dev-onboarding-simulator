@@ -1,0 +1,101 @@
+.docker-console {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #1e1e1e;
+    color: #f1f1f1;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+  }
+  
+  .console-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: #2d2d2d;
+    border-bottom: 1px solid #3d3d3d;
+  }
+  
+  .console-title {
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  .clear-btn {
+    background-color: transparent;
+    color: #f1f1f1;
+    border: none;
+    font-size: 0.8rem;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+  }
+  
+  .clear-btn:hover {
+    opacity: 1;
+  }
+  
+  .console-output {
+    flex-grow: 1;
+    padding: var(--spacing-md);
+    overflow-y: auto;
+    font-family: var(--mono-font);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  .console-entry {
+    margin-bottom: var(--spacing-sm);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  
+  .console-entry.command {
+    color: #f1f1f1;
+  }
+  
+  .console-entry.response {
+    color: #a9b7c6;
+  }
+  
+  .console-entry.response.success {
+    color: #6a8759;
+  }
+  
+  .console-entry.response.error {
+    color: #cc6666;
+  }
+  
+  .prompt {
+    color: #cc7832;
+    margin-right: var(--spacing-xs);
+  }
+  
+  .console-input {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: #2d2d2d;
+    border-top: 1px solid #3d3d3d;
+  }
+  
+  .console-input .prompt {
+    margin-right: var(--spacing-sm);
+  }
+  
+  .console-input input {
+    flex-grow: 1;
+    background-color: transparent;
+    border: none;
+    color: #f1f1f1;
+    font-family: var(--mono-font);
+    font-size: 0.9rem;
+  }
+  
+  .console-input input:focus {
+    outline: none;
+  }
+  
+  .console-input input::placeholder {
+    color: #6e6e6e;
+  }

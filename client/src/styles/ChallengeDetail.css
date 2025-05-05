@@ -1,0 +1,173 @@
+.challenge-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+  }
+  
+  .challenge-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .challenge-title-section h1 {
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .challenge-meta {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+  }
+  
+  .difficulty, .category, .time-limit {
+    font-size: 0.8rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    font-weight: 500;
+  }
+  
+  .difficulty.beginner {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: var(--beginner-color);
+  }
+  
+  .difficulty.intermediate {
+    background-color: rgba(243, 156, 18, 0.1);
+    color: var(--intermediate-color);
+  }
+  
+  .difficulty.advanced {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--advanced-color);
+  }
+  
+  .category {
+    background-color: rgba(63, 109, 179, 0.1);
+    color: var(--primary-color);
+  }
+  
+  .time-limit {
+    background-color: rgba(149, 165, 166, 0.1);
+    color: var(--text-light);
+  }
+  
+  .back-button {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    border-radius: var(--border-radius-md);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .back-button:hover {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  .challenge-content {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: var(--spacing-xl);
+  }
+  
+  .challenge-description-panel {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-lg);
+    height: fit-content;
+  }
+  
+  .description-content h2 {
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .hint-box {
+    background-color: rgba(243, 156, 18, 0.1);
+    border-left: 3px solid var(--warning-color);
+    padding: var(--spacing-md);
+    margin: var(--spacing-lg) 0;
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  }
+  
+  .hint-box h3 {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--warning-color);
+  }
+  
+  .description-actions {
+    margin-top: var(--spacing-lg);
+  }
+  
+  .hint-button {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: transparent;
+    color: var(--warning-color);
+    border: 1px solid var(--warning-color);
+    border-radius: var(--border-radius-md);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .hint-button:hover {
+    background-color: var(--warning-color);
+    color: white;
+  }
+  
+  .challenge-editor-panel {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  
+  .editor-actions {
+    padding: var(--spacing-md);
+    display: flex;
+    gap: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+  }
+  
+  .submit-button, .reset-button {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-button {
+    background-color: var(--primary-color);
+    color: white;
+    flex: 1;
+  }
+  
+  .submit-button:hover {
+    background-color: var(--primary-dark);
+  }
+  
+  .submit-button:disabled {
+    background-color: var(--text-light);
+    cursor: not-allowed;
+  }
+  
+  .reset-button {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+  }
+  
+  .reset-button:hover {
+    background-color: var(--bg-color);
+  }

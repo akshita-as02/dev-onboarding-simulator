@@ -1,0 +1,142 @@
+/* client/src/styles/ProgressTracker.css - Progress Tracker component styles */
+.progress-tracker {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .progress-tracker h2 {
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-lg);
+    color: var(--primary-color);
+  }
+  
+  .overall-progress {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-xs);
+    font-size: 0.9rem;
+  }
+  
+  .progress-bar {
+    height: 8px;
+    background-color: var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+  }
+  
+  .progress-fill.challenges {
+    background-color: var(--beginner-color);
+  }
+  
+  .progress-fill.deployments {
+    background-color: var(--intermediate-color);
+  }
+  
+  .progress-fill.troubleshoot {
+    background-color: var(--advanced-color);
+  }
+  
+  .progress-sections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+  
+  .progress-section {
+    background-color: #f9f9f9;
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .section-header h3 {
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+  
+  .completion-status {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  .section-link {
+    display: inline-block;
+    margin-top: var(--spacing-sm);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--primary-color);
+  }
+  
+  .section-link:hover {
+    text-decoration: underline;
+  }
+  
+  .certifications-earned {
+    margin-top: var(--spacing-lg);
+  }
+  
+  .certifications-earned h3 {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .certification-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .certification-badge {
+    display: flex;
+    align-items: center;
+    background-color: rgba(46, 204, 113, 0.1);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-md);
+  }
+  
+  .badge-icon {
+    font-size: 1.5rem;
+    margin-right: var(--spacing-md);
+    color: var(--success-color);
+  }
+  
+  .badge-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .badge-title {
+    font-weight: 500;
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .badge-date {
+    font-size: 0.8rem;
+    color: var(--text-light);
+  }
+  
+  .no-certifications {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: var(--spacing-md);
+  }

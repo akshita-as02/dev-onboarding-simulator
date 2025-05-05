@@ -1,0 +1,213 @@
+.profile-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+  }
+  
+  .profile-header {
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .profile-header h1 {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .profile-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-xl);
+  }
+  
+  .profile-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .profile-message {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-md);
+    font-size: 0.9rem;
+  }
+  
+  .profile-message.success {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: var(--success-color);
+  }
+  
+  .profile-message.error {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--error-color);
+  }
+  
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profile-avatar {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+  
+  .profile-details {
+    width: 100%;
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .profile-field {
+    display: flex;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .profile-field:last-child {
+    border-bottom: none;
+  }
+  
+  .field-label {
+    flex: 0 0 100px;
+    font-weight: 500;
+    color: var(--text-light);
+  }
+  
+  .field-value {
+    flex-grow: 1;
+  }
+  
+  .field-value.role {
+    color: var(--primary-color);
+    font-weight: 500;
+  }
+  
+  .profile-actions {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .edit-btn {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .edit-btn:hover {
+    background-color: var(--primary-dark);
+  }
+  
+  .profile-form {
+    width: 100%;
+  }
+  
+  .password-section {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+  }
+  
+  .password-section h3 {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+  }
+  
+  .save-btn, .cancel-btn {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .save-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    flex-grow: 1;
+  }
+  
+  .save-btn:hover {
+    background-color: var(--primary-dark);
+  }
+  
+  .save-btn:disabled {
+    background-color: var(--text-light);
+    cursor: not-allowed;
+  }
+  
+  .cancel-btn {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+  }
+  
+  .cancel-btn:hover {
+    background-color: var(--bg-color);
+  }
+  
+  .profile-stats {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-lg);
+  }
+  
+  .profile-stats h2 {
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+  
+  .stat-card {
+    background-color: var(--bg-color);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+    text-align: center;
+  }
+  
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--text-light);
+  }

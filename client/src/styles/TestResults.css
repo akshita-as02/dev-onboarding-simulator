@@ -1,0 +1,111 @@
+.test-results-container {
+    margin-top: var(--spacing-lg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+  }
+  
+  .test-results-header {
+    padding: var(--spacing-md);
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .test-results-header h3 {
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+  
+  .test-status {
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+  }
+  
+  .test-status.passed {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: var(--success-color);
+  }
+  
+  .test-status.failed {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--error-color);
+  }
+  
+  .test-stats {
+    padding: var(--spacing-md);
+    background-color: #fafafa;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .test-stat {
+    font-size: 0.9rem;
+  }
+  
+  .test-stat span {
+    font-weight: 500;
+  }
+  
+  .test-details {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .test-case {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .test-case:last-child {
+    border-bottom: none;
+  }
+  
+  .test-case-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .test-number {
+    font-weight: 500;
+  }
+  
+  .test-result {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  .test-result.passed {
+    color: var(--success-color);
+  }
+  
+  .test-result.failed {
+    color: var(--error-color);
+  }
+  
+  .test-case-details {
+    background-color: #f9f9f9;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    font-size: 0.9rem;
+  }
+  
+  .test-case-details h4 {
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-light);
+  }
+  
+  .test-case-details pre {
+    background-color: #f1f1f1;
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    overflow-x: auto;
+    font-family: var(--mono-font);
+    font-size: 0.8rem;
+  }

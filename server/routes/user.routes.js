@@ -9,6 +9,12 @@ router.use(authController.protect);
 // Get all users (admin only)
 router.get('/', authController.restrictTo('admin'), userController.getAllUsers);
 
+// Get user Activity
+router.get('/activity', userController.getUserActivity);
+
+// Get usesr profile
+router.get('/profile', userController.getUserProfile);
+
 // Get user by ID
 router.get('/:id', userController.getUserById);
 

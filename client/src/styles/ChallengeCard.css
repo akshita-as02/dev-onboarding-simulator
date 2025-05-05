@@ -1,0 +1,100 @@
+.challenge-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .challenge-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  .challenge-card-header {
+    padding: var(--spacing-md) var(--spacing-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .challenge-title {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+  }
+  
+  .challenge-difficulty {
+    font-size: 0.8rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    font-weight: 500;
+  }
+  
+  .challenge-difficulty-beginner {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: var(--beginner-color);
+  }
+  
+  .challenge-difficulty-intermediate {
+    background-color: rgba(243, 156, 18, 0.1);
+    color: var(--intermediate-color);
+  }
+  
+  .challenge-difficulty-advanced {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--advanced-color);
+  }
+  
+  .challenge-card-body {
+    padding: var(--spacing-lg);
+    flex-grow: 1;
+  }
+  
+  .challenge-description {
+    margin-bottom: var(--spacing-md);
+    font-size: 0.9rem;
+    color: var(--text-color);
+  }
+  
+  .challenge-category {
+    display: flex;
+    gap: var(--spacing-sm);
+  }
+  
+  .category-tag {
+    font-size: 0.8rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background-color: rgba(63, 109, 179, 0.1);
+    color: var(--primary-color);
+    border-radius: var(--border-radius-sm);
+    font-weight: 500;
+  }
+  
+  .challenge-card-footer {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+  }
+  
+  .challenge-btn {
+    display: block;
+    width: 100%;
+    padding: var(--spacing-md);
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-size: 0.9rem;
+    text-align: center;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .challenge-btn:hover {
+    background-color: var(--primary-dark);
+    color: white;
+  }
