@@ -20,7 +20,7 @@ const app = express();
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: ['https://devonboard.netlify.app/', 'http://localhost:3000'],
+  origin: ['https://devonboard.netlify.app', 'http://localhost:3000'],
   credentials: true
 }));
 app.use(express.json());
