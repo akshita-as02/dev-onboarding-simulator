@@ -88,16 +88,16 @@ const Profile = () => {
     setMessage('');
     
     // Validate password matching
-    if (formData.newPassword !== formData.confirmPassword) {
-      setError('New passwords do not match');
-      return;
-    }
-    
+        if (formData.newPassword !== formData.confirmPassword) {
+          setError('New passwords do not match');
+          return;
+        }
+        
     // Validate password length
     if (formData.newPassword.length < 6) {
       setError('New password must be at least 6 characters');
-      return;
-    }
+          return;
+        }
     
     // Set loading state
     const updateBtn = e.target.querySelector('button[type="submit"]');
@@ -196,10 +196,10 @@ const Profile = () => {
   if (error && !profileData) {
     return (
       <div className="profile-container">
-        <ErrorMessage
-          message={error}
-          onRetry={() => window.location.reload()}
-        />
+      <ErrorMessage
+        message={error}
+        onRetry={() => window.location.reload()}
+      />
       </div>
     );
   }
@@ -222,30 +222,30 @@ const Profile = () => {
           {isEditing ? (
             <div className="profile-edit-container">
               <form className="profile-form" onSubmit={handleProfileUpdate}>
-                <div className="form-group">
-                  <label htmlFor="name">Full Name</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label htmlFor="email">Email</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    disabled
-                  />
-                  <small>Email cannot be changed</small>
-                </div>
-
+              <div className="form-group">
+                <label htmlFor="name">Full Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  disabled
+                />
+                <small>Email cannot be changed</small>
+              </div>
+              
                 <div className="form-actions">
                   <button type="submit" className="save-btn">
                     Save Profile
@@ -299,14 +299,14 @@ const Profile = () => {
                     minLength="6"
                     required
                   />
-                </div>
-                
-                <div className="form-actions">
+              </div>
+              
+              <div className="form-actions">
                   <button type="submit" className="save-btn">
                     Update Password
-                  </button>
-                </div>
-              </form>
+                </button>
+              </div>
+            </form>
             </div>
           ) : (
             <div className="profile-info">

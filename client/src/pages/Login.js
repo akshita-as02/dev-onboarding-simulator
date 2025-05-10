@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import api from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import '../styles/Auth.css';
 
@@ -38,11 +38,7 @@ const Login = () => {
     setLoading(true);
     
     try {
-      // Method 1: Direct API call
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
-        email: formData.email,
-        password: formData.password
-      });
+      const response = await api.post('/api/auth/login', formData);
       
       // Login successful
       const { token, user } = response.data.data;
@@ -51,19 +47,13 @@ const Login = () => {
       localStorage.setItem('token', token);
       
       // Set the token in authorization header for future requests
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
-      // Method 2: Also update through the auth context (for state consistency)
-      try {
-        await authLogin(formData);
-      } catch (authErr) {
-        // Continue anyway as we already have the token
-      }
+      // Update through the auth context
+      await authLogin(formData);
       
-      // Delay navigation slightly to ensure everything is set
-      setTimeout(() => {
-        navigate(from, { replace: true });
-      }, 100);
+      // Navigate to the intended destination
+      navigate(from, { replace: true });
     } catch (err) {
       // Extract error message
       let errorMessage = 'Failed to login. Please check your credentials.';

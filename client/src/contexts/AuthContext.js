@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import api from '../services/api';
+//import api from '../services/api';
+import api from '../utils/api';
 
 const AuthContext = createContext();
 
@@ -83,7 +84,7 @@ export const AuthProvider = ({ children }) => {
         token = credentials;
       } else {
         // Otherwise make the login API call
-        const response = await api.post('/api/auth/login', credentials);
+      const response = await api.post('/api/auth/login', credentials);
         const data = response.data.data;
         token = data.token;
         userData = data.user;

@@ -33,24 +33,24 @@ module.exports = (passport) => {
   if (!process.env.JWT_SECRET) {
     throw new Error('JWT_SECRET environment variable is not set. Please check your .env file.');
   }
-
-  const options = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    
+    const options = {
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.JWT_SECRET
-  };
-  
-  passport.use(
-    new JwtStrategy(options, async (jwt_payload, done) => {
-      try {
-        const user = await User.findById(jwt_payload.id);
-        if (user) {
-          return done(null, user);
+    };
+    
+    passport.use(
+      new JwtStrategy(options, async (jwt_payload, done) => {
+        try {
+          const user = await User.findById(jwt_payload.id);
+          if (user) {
+            return done(null, user);
+          }
+          return done(null, false);
+        } catch (err) {
+          console.error('Error in JWT strategy', err);
+          return done(err, false);
         }
-        return done(null, false);
-      } catch (err) {
-        console.error('Error in JWT strategy', err);
-        return done(err, false);
-      }
-    })
-  );
+      })
+    );
 };
