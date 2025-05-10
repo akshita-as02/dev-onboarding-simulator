@@ -17,7 +17,6 @@ const DeploymentDetail = () => {
   const [consoleCommands, setConsoleCommands] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [progress, setProgress] = useState(null);
 
   useEffect(() => {
     const fetchDeployment = async () => {
@@ -30,7 +29,6 @@ const DeploymentDetail = () => {
           const { currentStepIndex, completedStepIds } = response.data.data.progress;
           setCurrentStep(currentStepIndex);
           setCompletedSteps(completedStepIds);
-          setProgress(response.data.data.progress);
         }
         
         // Set available commands for docker console
