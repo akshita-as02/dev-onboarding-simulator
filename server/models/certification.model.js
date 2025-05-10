@@ -13,12 +13,11 @@ const certificationSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
   },
   requirements: [{
     type: {
       type: String,
-      enum: ['challenge', 'deployment', 'troubleshoot'],
+      enum: ['challenge', 'deployment', 'troubleshooting'],
       required: true,
     },
     item: {

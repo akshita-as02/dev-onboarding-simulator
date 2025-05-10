@@ -11,18 +11,24 @@ const signToken = (id) => {
 };
 
 // Create and send token with response
-// In auth.controller.js, modify createSendToken:
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
   
-  // Remove password from output
-  user.password = undefined;
+  // Create a new user object without the password
+  const userWithoutPassword = {
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt
+  };
 
   res.status(statusCode).json({
     status: 'success',
     data: {
       token,
-      user,
+      user: userWithoutPassword,
     },
   });
 };
@@ -34,7 +40,10 @@ exports.register = catchAsync(async (req, res, next) => {
   // Check if user already exists
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    return next(new AppError('User already exists with this email', 400));
+    return res.status(400).json({
+      status: 'fail',
+      message: 'User already exists with this email. Please use a different email or login with your existing account.'
+    });
   }
 
   // Create new user
@@ -88,8 +97,8 @@ exports.protect = catchAsync(async (req, res, next) => {
   // 2) Verify token
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-  // 3) Check if user still exists
-  const currentUser = await User.findById(decoded.id);
+  // 3) Check if user still exists - exclude password field
+  const currentUser = await User.findById(decoded.id).select('-password');
   if (!currentUser) {
     return next(
       new AppError('The user belonging to this token no longer exists', 401)
@@ -116,11 +125,20 @@ exports.restrictTo = (...roles) => {
 
 // Get current user
 exports.getMe = catchAsync(async (req, res, next) => {
-  // User is already available in req.user after protect middleware
+  // Create a user object without the password
+  const userWithoutPassword = {
+    _id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+    role: req.user.role,
+    createdAt: req.user.createdAt,
+    updatedAt: req.user.updatedAt
+  };
+  
   res.status(200).json({
     status: 'success',
     data: {
-      user: req.user,
+      user: userWithoutPassword,
     },
   });
 });

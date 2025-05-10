@@ -12,6 +12,7 @@ const deploymentRoutes = require('./routes/deployment.routes');
 const troubleshootRoutes = require('./routes/troubleshoot.routes');
 const progressRoutes = require('./routes/progress.routes');
 const certificationRoutes = require('./routes/certification.routes');
+const adminRoutes = require('./routes/admin.routes');
 
 // Initialize express app
 const app = express();
@@ -34,14 +35,40 @@ app.use('/api/deployments', deploymentRoutes);
 app.use('/api/troubleshoot', troubleshootRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/certifications', certificationRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
-    message: 'Internal Server Error',
-    error: process.env.NODE_ENV === 'development' ? err.message : {}
-  });
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || 'error';
+
+  // Development error response
+  if (process.env.NODE_ENV === 'development') {
+    res.status(err.statusCode).json({
+      status: err.status,
+      message: err.message,
+      error: err,
+      stack: err.stack
+    });
+  } 
+  // Production error response
+  else {
+    // Operational, trusted error: send message to client
+    if (err.isOperational) {
+      res.status(err.statusCode).json({
+        status: err.status,
+        message: err.message
+      });
+    } 
+    // Programming or other unknown error: don't leak error details
+    else {
+      console.error('ERROR 💥', err);
+      res.status(500).json({
+        status: 'error',
+        message: 'Something went wrong!'
+      });
+    }
+  }
 });
 
 module.exports = app;

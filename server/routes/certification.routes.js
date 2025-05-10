@@ -9,6 +9,9 @@ router.use(authController.protect);
 // Get my certifications
 router.get('/my-certifications', certificationController.getMyCertifications);
 
+// Get upcoming certifications
+router.get('/upcoming', certificationController.getUpcomingCertifications);
+
 // Get certification by ID
 router.get('/:id', certificationController.getCertificationById);
 

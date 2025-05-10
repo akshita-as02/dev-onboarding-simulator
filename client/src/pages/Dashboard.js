@@ -26,9 +26,9 @@ const Dashboard = () => {
         const activityResponse = await api.get("/api/users/activity");
         setRecentActivity(activityResponse.data.data.activities);
 
-        // Fetch upcoming certifications
-        const certResponse = await api.get("/api/certifications/upcoming");
-        setUpcomingCertifications(certResponse.data.data.certifications);
+        // Fetch certifications (including upcoming)
+        const certResponse = await api.get("/api/certifications/my-certifications");
+        setUpcomingCertifications(certResponse.data.data.availableCertifications || []);
 
         setLoading(false);
       } catch (err) {

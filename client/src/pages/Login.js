@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
 import '../styles/Auth.css';
 
@@ -11,8 +12,12 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
-  const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login: authLogin } = useAuth();
+  
+  // Get redirect path if user was redirected from a protected route
+  const from = location.state?.from || '/dashboard';
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,24 +30,51 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    if (!formData.email || !formData.password) {
+      setError('Please fill in all fields');
+      return;
+    }
+    
+    setLoading(true);
+    
     try {
-      setError('');
-      setLoading(true);
+      // Method 1: Direct API call
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
+        email: formData.email,
+        password: formData.password
+      });
       
-      // Validate form
-      if (!formData.email || !formData.password) {
-        setError('Please fill in all fields');
-        setLoading(false);
-        return;
+      // Login successful
+      const { token, user } = response.data.data;
+      
+      // Store the token in localStorage
+      localStorage.setItem('token', token);
+      
+      // Set the token in authorization header for future requests
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      
+      // Method 2: Also update through the auth context (for state consistency)
+      try {
+        await authLogin(formData);
+      } catch (authErr) {
+        // Continue anyway as we already have the token
       }
       
-      // Submit login
-      await login(formData);
-      
-      // Navigate to dashboard on success
-      navigate('/dashboard');
+      // Delay navigation slightly to ensure everything is set
+      setTimeout(() => {
+        navigate(from, { replace: true });
+      }, 100);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to login');
+      // Extract error message
+      let errorMessage = 'Failed to login. Please check your credentials.';
+      
+      if (err.response?.data?.message) {
+        errorMessage = err.response.data.message;
+      }
+      
+      // Set error message
+      setError(errorMessage);
+    } finally {
       setLoading(false);
     }
   };
@@ -52,7 +84,11 @@ const Login = () => {
       <div className="auth-card">
         <h2>Login to Your Account</h2>
         
-        {error && <div className="auth-error">{error}</div>}
+        {error && (
+          <div className="auth-error" style={{display: 'block', opacity: 1}}>
+            <strong>Error:</strong> {error}
+          </div>
+        )}
         
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-group">
@@ -65,6 +101,7 @@ const Login = () => {
               onChange={handleChange}
               required
               placeholder="Enter your email"
+              className={error ? 'error' : ''}
             />
           </div>
           
@@ -78,6 +115,7 @@ const Login = () => {
               onChange={handleChange}
               required
               placeholder="Enter your password"
+              className={error ? 'error' : ''}
             />
           </div>
           

@@ -27,11 +27,13 @@ export const AuthProvider = ({ children }) => {
         
         // Get user data
         const response = await api.get('/api/auth/me');
+        console.log('Loading user data:', response.data.data.user);
         setUser(response.data.data.user);
       } catch (error) {
         // Clear storage on auth error
+        console.error('Error loading user:', error);
         localStorage.removeItem('token');
-        setError(error.response?.data?.message || 'Authentication error');
+        setError(error.customMessage || 'Authentication error');
       } finally {
         setLoading(false);
       }
@@ -57,32 +59,57 @@ export const AuthProvider = ({ children }) => {
       setError(null);
       return user;
     } catch (error) {
-      setError(error.response?.data?.message || 'Registration failed');
-      throw error;
+      // Extract the error message from the response
+      const errorMessage = error.customMessage || 'Registration failed';
+      setError(errorMessage);
+      throw error; // Keep the original error to preserve the custom message
     } finally {
       setLoading(false);
     }
   };
   
-  // Login user
+  // Login user - this can be called both from the Login component and directly
   const login = async (credentials) => {
     try {
+      // Clear previous success states but keep any existing errors
       setLoading(true);
-      const response = await api.post('/api/auth/login', credentials);
       
-      // Save token and user data
-      const { token, user } = response.data.data;
+      // If credentials is a token, we'll use that directly
+      let userData;
+      let token;
+      
+      if (typeof credentials === 'string') {
+        // If called with a token, use that
+        token = credentials;
+      } else {
+        // Otherwise make the login API call
+        const response = await api.post('/api/auth/login', credentials);
+        const data = response.data.data;
+        token = data.token;
+        userData = data.user;
+      }
+      
+      // Always ensure token is stored
       localStorage.setItem('token', token);
-      
-      // Set auth header
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
-      setUser(user);
+      // If userData wasn't provided, fetch it
+      if (!userData) {
+        const userResponse = await api.get('/api/auth/me');
+        userData = userResponse.data.data.user;
+      }
+      
+      // On successful login, clear errors and set user
       setError(null);
-      return user;
+      setUser(userData);
+      
+      return userData;
     } catch (error) {
-      setError(error.response?.data?.message || 'Login failed');
-      throw error;
+      // Special handling for login errors
+      const errorMessage = error.customMessage || 'Login failed';
+      console.error('Auth error:', errorMessage);
+      setError(errorMessage);
+      throw error; // Keep the original error to preserve the custom message
     } finally {
       setLoading(false);
     }
@@ -100,6 +127,11 @@ export const AuthProvider = ({ children }) => {
     setError(null);
   };
   
+  // Clear error (can be called explicitly to clear error state)
+  const clearError = () => {
+    setError(null);
+  };
+  
   const value = {
     user,
     loading,
@@ -107,6 +139,7 @@ export const AuthProvider = ({ children }) => {
     register,
     login,
     logout,
+    clearError
   };
   
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

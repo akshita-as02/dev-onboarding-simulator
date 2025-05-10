@@ -4,6 +4,7 @@ import api from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
 import '../styles/Profile.css';
+import axios from 'axios';
 
 const Profile = () => {
   const { user, logout } = useAuth();
@@ -42,50 +43,90 @@ const Profile = () => {
     fetchProfileData();
   }, []);
 
+  // Add useEffect to flash error message and handle errors visually
+  useEffect(() => {
+    // When an error is set, make it visually attention-getting
+    if (error) {
+      console.log('Error message set:', error);
+      
+      // Find the error element
+      const errorEl = document.querySelector('.profile-message.error');
+      if (errorEl) {
+        // Add attention class that will be removed after animation
+        errorEl.classList.add('flash-error');
+        
+        // Scroll to the error if not in view
+        errorEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        
+        // Remove the flash class after animation completes
+        setTimeout(() => {
+          errorEl.classList.remove('flash-error');
+        }, 1000);
+      }
+    }
+  }, [error]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
     });
+    
+    // Clear error and messages when user starts typing
+    if (name === 'currentPassword' || name === 'newPassword' || name === 'confirmPassword') {
+      setError('');
+      setMessage('');
+    }
   };
 
-  const handleSubmit = async (e) => {
+  const handlePasswordUpdate = async (e) => {
     e.preventDefault();
     
+    // Always clear previous messages first
+    setError('');
+    setMessage('');
+    
+    // Validate password matching
+    if (formData.newPassword !== formData.confirmPassword) {
+      setError('New passwords do not match');
+      return;
+    }
+    
+    // Validate password length
+    if (formData.newPassword.length < 6) {
+      setError('New password must be at least 6 characters');
+      return;
+    }
+    
+    // Set loading state
+    const updateBtn = e.target.querySelector('button[type="submit"]');
+    if (updateBtn) {
+      updateBtn.disabled = true;
+      updateBtn.textContent = 'Updating...';
+    }
+    
+    console.log('Updating password...');
+    
     try {
-      // Validate passwords if changing
-      if (formData.newPassword) {
-        if (formData.newPassword !== formData.confirmPassword) {
-          setError('New passwords do not match');
-          return;
+      // Directly use axios instead of our api instance to bypass interceptors
+      const token = localStorage.getItem('token');
+      const response = await axios({
+        method: 'put',
+        url: 'http://localhost:5000/api/users/update-password',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        data: {
+          currentPassword: formData.currentPassword,
+          newPassword: formData.newPassword,
         }
-        
-        if (!formData.currentPassword) {
-          setError('Current password is required to set a new password');
-          return;
-        }
-      }
+      });
       
-      setLoading(true);
+      console.log('Password update successful:', response.data);
       
-      // Prepare update data
-      const updateData = {
-        name: formData.name,
-      };
-      
-      if (formData.newPassword) {
-        updateData.currentPassword = formData.currentPassword;
-        updateData.newPassword = formData.newPassword;
-      }
-      
-      // Submit update
-      const response = await api.put('/api/users/profile', updateData);
-      
-      // Update profile data
-      setProfileData(response.data.data.user);
-      
-      // Reset password fields
+      // Clear password fields on success
       setFormData({
         ...formData,
         currentPassword: '',
@@ -93,17 +134,52 @@ const Profile = () => {
         confirmPassword: '',
       });
       
+      // Show success message
+      setMessage('Password updated successfully');
+    } catch (err) {
+      console.error('Password update error:', err);
+      
+      // Handle 401 errors specially
+      if (err.response?.status === 401) {
+        setError('Current password is incorrect. Please try again.');
+      } else {
+        // Use the custom message or a generic fallback
+        setError(err.customMessage || err.response?.data?.message || 'Failed to update password. Please try again.');
+      }
+      
+      // Log full error details for debugging
+      console.log('Error details:', {
+        status: err.response?.status,
+        message: err.message,
+        data: err.response?.data,
+        customMessage: err.customMessage
+      });
+    } finally {
+      // Re-enable the button
+      if (updateBtn) {
+        updateBtn.disabled = false;
+        updateBtn.textContent = 'Update Password';
+      }
+    }
+  };
+
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    
+    try {
+      setError('');
+      setMessage('');
+      
+      const response = await api.put('/api/users/profile', {
+        name: formData.name,
+        email: formData.email,
+      });
+      
+      setProfileData(response.data.data.user);
       setMessage('Profile updated successfully');
       setIsEditing(false);
-      setLoading(false);
-      
-      // Clear message after 3 seconds
-      setTimeout(() => {
-        setMessage('');
-      }, 3000);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update profile');
-      setLoading(false);
+      setError(err.customMessage || 'Failed to update profile');
     }
   };
 
@@ -119,10 +195,12 @@ const Profile = () => {
 
   if (error && !profileData) {
     return (
-      <ErrorMessage
-        message={error}
-        onRetry={() => window.location.reload()}
-      />
+      <div className="profile-container">
+        <ErrorMessage
+          message={error}
+          onRetry={() => window.location.reload()}
+        />
+      </div>
     );
   }
 
@@ -142,32 +220,47 @@ const Profile = () => {
           {error && <div className="profile-message error">{error}</div>}
           
           {isEditing ? (
-            <form className="profile-form" onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="name">Full Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+            <div className="profile-edit-container">
+              <form className="profile-form" onSubmit={handleProfileUpdate}>
+                <div className="form-group">
+                  <label htmlFor="name">Full Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    disabled
+                  />
+                  <small>Email cannot be changed</small>
+                </div>
+
+                <div className="form-actions">
+                  <button type="submit" className="save-btn">
+                    Save Profile
+                  </button>
+                  <button
+                    type="button"
+                    className="cancel-btn"
+                    onClick={toggleEdit}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
               
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  disabled
-                />
-                <small>Email cannot be changed</small>
-              </div>
-              
-              <div className="password-section">
+              <form className="password-form" onSubmit={handlePasswordUpdate}>
                 <h3>Change Password</h3>
                 
                 <div className="form-group">
@@ -178,6 +271,7 @@ const Profile = () => {
                     name="currentPassword"
                     value={formData.currentPassword}
                     onChange={handleChange}
+                    required
                   />
                 </div>
                 
@@ -190,6 +284,7 @@ const Profile = () => {
                     value={formData.newPassword}
                     onChange={handleChange}
                     minLength="6"
+                    required
                   />
                 </div>
                 
@@ -202,24 +297,17 @@ const Profile = () => {
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     minLength="6"
+                    required
                   />
                 </div>
-              </div>
-              
-              <div className="form-actions">
-                <button type="submit" className="save-btn" disabled={loading}>
-                  {loading ? 'Saving...' : 'Save Changes'}
-                </button>
-                <button
-                  type="button"
-                  className="cancel-btn"
-                  onClick={toggleEdit}
-                  disabled={loading}
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
+                
+                <div className="form-actions">
+                  <button type="submit" className="save-btn">
+                    Update Password
+                  </button>
+                </div>
+              </form>
+            </div>
           ) : (
             <div className="profile-info">
               <div className="profile-avatar">

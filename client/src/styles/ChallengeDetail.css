@@ -72,8 +72,9 @@
   
   .challenge-content {
     display: grid;
-    grid-template-columns: 350px 1fr;
+    grid-template-columns: minmax(300px, 350px) 1fr;
     gap: var(--spacing-xl);
+    min-height: 500px;
   }
   
   .challenge-description-panel {
@@ -128,6 +129,9 @@
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-sm);
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 500px;
   }
   
   .editor-actions {

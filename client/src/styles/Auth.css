@@ -24,12 +24,19 @@
   }
   
   .auth-error {
-    background-color: rgba(231, 76, 60, 0.1);
-    color: var(--error-color);
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius-md);
-    margin-bottom: var(--spacing-lg);
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    border: 1px solid #ef9a9a;
+    font-weight: 500;
+    font-size: 0.95rem;
     text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
   
   .auth-form .form-group {
@@ -54,6 +61,16 @@
   .auth-form input:focus {
     outline: none;
     border-color: var(--primary-color);
+  }
+  
+  .auth-form input.error {
+    border-color: #c62828;
+    background-color: #ffebee;
+  }
+  
+  .auth-form input.error:focus {
+    border-color: #c62828;
+    box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.2);
   }
   
   .auth-button {

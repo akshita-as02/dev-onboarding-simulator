@@ -1,3 +1,4 @@
+// server/routes/user.routes.js
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/user.controller');
@@ -9,17 +10,23 @@ router.use(authController.protect);
 // Get all users (admin only)
 router.get('/', authController.restrictTo('admin'), userController.getAllUsers);
 
-// Get user Activity
+// Get user activity
 router.get('/activity', userController.getUserActivity);
 
-// Get usesr profile
+// Get user profile
 router.get('/profile', userController.getUserProfile);
+
+// Update user profile
+router.put('/profile', userController.updateUserProfile);
+
+// Update password
+router.put('/update-password', userController.updatePassword);
 
 // Get user by ID
 router.get('/:id', userController.getUserById);
 
-// Update user
-router.put('/:id', userController.updateUser);
+// Update user (admin only)
+router.put('/:id', authController.restrictTo('admin'), userController.updateUser);
 
 // Delete user (admin only)
 router.delete('/:id', authController.restrictTo('admin'), userController.deleteUser);

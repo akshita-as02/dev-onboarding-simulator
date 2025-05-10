@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import api from '../services/api';
 import '../styles/Auth.css';
 
 const Register = () => {
+  const { register: authRegister, error: authError, clearError } = useAuth();
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,8 +17,12 @@ const Register = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
-  const { register } = useAuth();
-  const navigate = useNavigate();
+  // Add useEffect to handle auth errors
+  useEffect(() => {
+    if (authError) {
+      setError(authError);
+    }
+  }, [authError]);
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,6 +30,12 @@ const Register = () => {
       ...formData,
       [name]: value,
     });
+    
+    // Clear errors when typing
+    if (error) {
+      setError('');
+      clearError?.();
+    }
   };
   
   const handleSubmit = async (e) => {
@@ -32,12 +46,7 @@ const Register = () => {
       setLoading(true);
       
       // Validate form
-      if (
-        !formData.name ||
-        !formData.email ||
-        !formData.password ||
-        !formData.confirmPassword
-      ) {
+      if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
         setError('Please fill in all fields');
         setLoading(false);
         return;
@@ -55,17 +64,38 @@ const Register = () => {
         return;
       }
       
-      // Submit registration
-      await register({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      });
-      
-      // Navigate to dashboard on success
-      navigate('/dashboard');
+      // Use the auth context register function for proper state management
+      try {
+        // Create registration data (without confirmPassword)
+        const registrationData = {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password
+        };
+        
+        // Register using the auth context
+        await authRegister(registrationData);
+        
+        // If we get here, registration was successful
+        console.log('Registration successful, redirecting to dashboard');
+        
+        // Navigate to dashboard
+        navigate('/dashboard');
+      } catch (err) {
+        console.error('Registration error:', err);
+        
+        // Special handling for email already exists
+        if (err.response?.data?.message?.includes('already exists')) {
+          setError('This email is already registered. Please use a different email or login with your existing account.');
+        } else {
+          setError(err.response?.data?.message || 'Registration failed. Please try again.');
+        }
+      } finally {
+        setLoading(false);
+      }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to register');
+      console.error('Unexpected error:', err);
+      setError('An unexpected error occurred. Please try again.');
       setLoading(false);
     }
   };
@@ -75,7 +105,11 @@ const Register = () => {
       <div className="auth-card">
         <h2>Create an Account</h2>
         
-        {error && <div className="auth-error">{error}</div>}
+        {error && (
+          <div className="auth-error">
+            {error}
+          </div>
+        )}
         
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-group">
@@ -101,6 +135,7 @@ const Register = () => {
               onChange={handleChange}
               required
               placeholder="Enter your email"
+              className={error && error.includes('email') ? 'error' : ''}
             />
           </div>
           
@@ -115,6 +150,7 @@ const Register = () => {
               required
               placeholder="Create a password"
               minLength="6"
+              className={error && error.includes('password') ? 'error' : ''}
             />
           </div>
           
@@ -128,6 +164,7 @@ const Register = () => {
               onChange={handleChange}
               required
               placeholder="Confirm your password"
+              className={error && error.includes('match') ? 'error' : ''}
             />
           </div>
           

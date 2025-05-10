@@ -9,21 +9,25 @@ const progressSchema = new mongoose.Schema({
   challenge: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Challenge',
-    required: true,
   },
   deployment: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Deployment',
   },
-  troubleshoot: {
+  troubleshooting: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Troubleshoot',
+    ref: 'Troubleshooting',
   },
   status: {
     type: String,
-    enum: ['in-progress', 'completed', 'stuck'],
-    default: 'in-progress',
+    enum: ['in_progress', 'completed', 'stuck'],
+    default: 'in_progress',
   },
+  currentStepIndex: {
+    type: Number,
+    default: 0,
+  },
+  completedStepIds: [Number],
   submittedCode: {
     type: String,
   },

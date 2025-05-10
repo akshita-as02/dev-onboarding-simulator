@@ -40,8 +40,14 @@
   }
   
   .profile-message.error {
-    background-color: rgba(231, 76, 60, 0.1);
-    color: var(--error-color);
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+    font-weight: 500;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
   }
   
   .profile-info {
@@ -211,3 +217,63 @@
     font-size: 0.8rem;
     color: var(--text-light);
   }
+
+.profile-edit-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.password-form {
+  background-color: var(--card-bg-secondary);
+  padding: 1.5rem;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.password-form h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+  font-size: 1.2rem;
+}
+
+.profile-message {
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.profile-message.success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+.profile-message.error {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+}
+
+/* Animation for error flashing */
+@keyframes errorFlash {
+  0%, 100% { 
+    transform: translateX(0);
+    background-color: #ffebee; 
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+    background-color: #ffcdd2;
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+    background-color: #ef9a9a;
+  }
+}
+
+.flash-error {
+  animation: errorFlash 0.8s ease;
+  box-shadow: 0 0 10px rgba(198, 40, 40, 0.3);
+}

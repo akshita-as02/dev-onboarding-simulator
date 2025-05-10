@@ -1,3 +1,4 @@
+// client/src/App.js - Update with admin routes
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
@@ -21,11 +22,20 @@ import Profile from './pages/Profile';
 import Certifications from './pages/Certifications';
 import NotFound from './pages/NotFound';
 
-// Protected Route component
+// Admin Pages
+import AdminStats from './pages/AdminStats';
+import AdminChallenges from './pages/AdminChallenges';
+import AdminDeployments from './pages/AdminDeployments';
+import AdminTroubleshoot from './pages/AdminTroubleshoot';
+import AdminUsers from './pages/AdminUsers';
+import AdminCertifications from './pages/AdminCertifications';
+
+// Protected Route components
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute';
 
 function App() {
-  const { user, loading } = useAuth();
+  const { loading } = useAuth();
   
   if (loading) {
     return <div className="loading-container">Loading...</div>;
@@ -92,6 +102,43 @@ function App() {
           <ProtectedRoute>
             <Certifications />
           </ProtectedRoute>
+        } />
+        
+        {/* Admin routes */}
+        <Route path="admin" element={
+          <AdminRoute>
+            <AdminStats />
+          </AdminRoute>
+        } />
+        
+        <Route path="admin/challenges" element={
+          <AdminRoute>
+            <AdminChallenges />
+          </AdminRoute>
+        } />
+        
+        <Route path="admin/deployments" element={
+          <AdminRoute>
+            <AdminDeployments />
+          </AdminRoute>
+        } />
+        
+        <Route path="admin/troubleshoot" element={
+          <AdminRoute>
+            <AdminTroubleshoot />
+          </AdminRoute>
+        } />
+        
+        <Route path="admin/users" element={
+          <AdminRoute>
+            <AdminUsers />
+          </AdminRoute>
+        } />
+        
+        <Route path="admin/certifications" element={
+          <AdminRoute>
+            <AdminCertifications />
+          </AdminRoute>
         } />
         
         {/* 404 - Not Found */}
