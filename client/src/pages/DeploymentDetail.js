@@ -17,6 +17,7 @@ const DeploymentDetail = () => {
   const [consoleCommands, setConsoleCommands] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [progress, setProgress] = useState(null);
 
   useEffect(() => {
     const fetchDeployment = async () => {
