@@ -1,7 +1,6 @@
+require('dotenv').config();
 const app = require('./app');
 const mongoose = require('mongoose');
-require('dotenv').config();
-console.log('JWT_SECRET:', process.env.JWT_SECRET);
 const PORT = process.env.PORT || 5000;
 
 // Connect to MongoDB
