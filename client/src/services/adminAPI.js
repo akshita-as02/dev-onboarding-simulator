@@ -32,13 +32,14 @@ const adminApi = {
   deleteTroubleshooting: (id) => api.delete(`/api/troubleshoot/${id}`),
   
   // Certifications
-  getAllCertifications: () => api.get('/api/certifications'),
-  getCertification: (id) => api.get(`/api/certifications/${id}`),
-  createCertification: (certificationData) => api.post('/api/certifications', certificationData),
-  updateCertification: (id, certificationData) => api.put(`/api/certifications/${id}`, certificationData),
-  deleteCertification: (id) => api.delete(`/api/certifications/${id}`),
-  issueCertification: (id, userId) => api.post(`/api/certifications/${id}/issue`, { userId }),
-  revokeCertification: (id) => api.put(`/api/certifications/${id}/revoke`)
+  getAllCertifications: () => api.get('/api/admin/certifications'),
+  getCertification: (id) => api.get(`/api/admin/certifications/${id}`),
+  createCertification: (certificationData) => api.post('/api/admin/certifications', certificationData),
+  updateCertification: (id, certificationData) => api.put(`/api/admin/certifications/${id}`, certificationData),
+  deleteCertification: (id) => api.delete(`/api/admin/certifications/${id}`),
+  issueCertification: (id, userId) => api.post(`/api/admin/certifications/${id}/issue`, { userId }),
+  revokeCertification: (id) => api.put(`/api/admin/certifications/${id}/revoke`),
+  verifyCertification: (id) => api.get(`/api/admin/certifications/${id}/verify`)
 };
 
 export default adminApi;

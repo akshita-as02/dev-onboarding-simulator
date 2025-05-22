@@ -1,84 +1,99 @@
 // client/src/pages/AdminCertifications.js
-import React, { useState, useEffect } from 'react';
-// import { Link } from 'react-router-dom';
-import api from '../services/api';
-import LoadingSpinner from '../components/LoadingSpinner';
-import ErrorMessage from '../components/ErrorMessage';
-import '../styles/AdminPages.css';
+import React, { useState, useEffect } from "react";
+import adminAPI from "../services/adminAPI";
+import LoadingSpinner from "../components/LoadingSpinner";
+import ErrorMessage from "../components/ErrorMessage";
+import { useAuth } from "../contexts/AuthContext";
+import "../styles/AdminPages.css";
 
 const AdminCertifications = () => {
+  const { user } = useAuth();
   const [certifications, setCertifications] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedCertification, setSelectedCertification] = useState(null);
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
+    title: "",
+    description: "",
     requirements: [],
     currentRequirement: {
-      type: 'challenge',
-      item: ''
-    }
+      type: "challenge",
+      item: "",
+    },
   });
 
   useEffect(() => {
+    console.log('Current user:', user);
+    console.log('Token exists:', !!localStorage.getItem('token'));
     fetchCertifications();
-  }, []);
+  }, [user]);
 
   const fetchCertifications = async () => {
+    console.log('Fetching certifications');
     try {
-      const response = await api.get('/api/certifications');
+      const response = await adminAPI.getAllCertifications();
+      console.log('Response:', response.data.data.certifications);
       setCertifications(response.data.data.certifications || []);
       setLoading(false);
+      console.log('Certifications fetched:', response.data.data.certifications);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to load certifications');
       setLoading(false);
+      console.error('Error fetching certifications:', err);
     }
   };
 
   const handleCreateCertification = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('/api/certifications', formData);
+      const response = await adminAPI.createCertification(formData);
       setCertifications([...certifications, response.data.data.certification]);
       setShowCreateModal(false);
       setFormData({
-        title: '',
-        description: '',
+        title: "",
+        description: "",
         requirements: [],
         currentRequirement: {
-          type: 'challenge',
-          item: ''
-        }
+          type: "challenge",
+          item: "",
+        },
       });
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to create certification');
+      setError(err.response?.data?.message || "Failed to create certification");
     }
   };
 
   const handleUpdateCertification = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.put(`/api/certifications/${selectedCertification._id}`, formData);
-      setCertifications(certifications.map(certification => 
-        certification._id === selectedCertification._id ? response.data.data.certification : certification
-      ));
+      const response = await adminAPI.updateCertification(selectedCertification._id, formData);
+      setCertifications(
+        certifications.map((certification) =>
+          certification._id === selectedCertification._id
+            ? response.data.data.certification
+            : certification
+        )
+      );
       setShowEditModal(false);
       setSelectedCertification(null);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update certification');
+      setError(err.response?.data?.message || "Failed to update certification");
     }
   };
 
   const handleDeleteCertification = async (id) => {
-    if (window.confirm('Are you sure you want to delete this certification?')) {
+    if (window.confirm("Are you sure you want to delete this certification?")) {
       try {
-        await api.delete(`/api/certifications/${id}`);
-        setCertifications(certifications.filter(certification => certification._id !== id));
+        await adminAPI.deleteCertification(id);
+        setCertifications(
+          certifications.filter((certification) => certification._id !== id)
+        );
       } catch (err) {
-        setError(err.response?.data?.message || 'Failed to delete certification');
+        setError(
+          err.response?.data?.message || "Failed to delete certification"
+        );
       }
     }
   };
@@ -90,58 +105,58 @@ const AdminCertifications = () => {
       description: certification.description,
       requirements: certification.requirements || [],
       currentRequirement: {
-        type: 'challenge',
-        item: ''
-      }
+        type: "challenge",
+        item: "",
+      },
     });
     setShowEditModal(true);
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleRequirementTypeChange = (e) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       currentRequirement: {
         ...prev.currentRequirement,
-        type: e.target.value
-      }
+        type: e.target.value,
+      },
     }));
   };
 
   const handleRequirementItemChange = (e) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       currentRequirement: {
         ...prev.currentRequirement,
-        item: e.target.value
-      }
+        item: e.target.value,
+      },
     }));
   };
 
   const handleAddRequirement = () => {
     if (formData.currentRequirement.item.trim()) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         requirements: [...prev.requirements, { ...prev.currentRequirement }],
         currentRequirement: {
-          type: 'challenge',
-          item: ''
-        }
+          type: "challenge",
+          item: "",
+        },
       }));
     }
   };
 
   const handleRemoveRequirement = (index) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      requirements: prev.requirements.filter((_, i) => i !== index)
+      requirements: prev.requirements.filter((_, i) => i !== index),
     }));
   };
 
@@ -151,10 +166,7 @@ const AdminCertifications = () => {
 
   if (error) {
     return (
-      <ErrorMessage
-        message={error}
-        onRetry={() => window.location.reload()}
-      />
+      <ErrorMessage message={error} onRetry={() => window.location.reload()} />
     );
   }
 
@@ -162,10 +174,7 @@ const AdminCertifications = () => {
     <div className="admin-page-container">
       <div className="admin-header">
         <h1>Manage Certifications</h1>
-        <button 
-          className="add-button"
-          onClick={() => setShowCreateModal(true)}
-        >
+        <button className="add-button" onClick={() => setShowCreateModal(true)}>
           Add New Certification
         </button>
       </div>
@@ -176,7 +185,8 @@ const AdminCertifications = () => {
             <tr>
               <th>Title</th>
               <th>Requirements</th>
-              <th>Users Certified</th>
+              <th>Issued To</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -186,15 +196,16 @@ const AdminCertifications = () => {
                 <tr key={certification._id}>
                   <td>{certification.title}</td>
                   <td>{certification.requirements?.length || 0} requirements</td>
-                  <td>0 users</td>
+                  <td>{certification.user ? certification.user.name : 'Not issued'}</td>
+                  <td>{certification.isValid ? 'Valid' : 'Revoked'}</td>
                   <td className="actions-cell">
-                    <button 
+                    <button
                       className="edit-link"
                       onClick={() => handleEditClick(certification)}
                     >
                       Edit
                     </button>
-                    <button 
+                    <button
                       className="delete-button"
                       onClick={() => handleDeleteCertification(certification._id)}
                     >
@@ -205,7 +216,9 @@ const AdminCertifications = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="4" className="no-data">No certifications found</td>
+                <td colSpan="5" className="no-data">
+                  No certifications found
+                </td>
               </tr>
             )}
           </tbody>
@@ -242,7 +255,9 @@ const AdminCertifications = () => {
                 <div className="requirements-container">
                   {formData.requirements.map((req, index) => (
                     <div key={index} className="requirement-item">
-                      <span>{req.type}: {req.item}</span>
+                      <span>
+                        {req.type}: {req.item}
+                      </span>
                       <button
                         type="button"
                         className="remove-requirement"
@@ -278,9 +293,11 @@ const AdminCertifications = () => {
                 </div>
               </div>
               <div className="modal-actions">
-                <button type="submit" className="submit-button">Create</button>
-                <button 
-                  type="button" 
+                <button type="submit" className="submit-button">
+                  Create
+                </button>
+                <button
+                  type="button"
                   className="cancel-button"
                   onClick={() => setShowCreateModal(false)}
                 >
@@ -322,7 +339,9 @@ const AdminCertifications = () => {
                 <div className="requirements-container">
                   {formData.requirements.map((req, index) => (
                     <div key={index} className="requirement-item">
-                      <span>{req.type}: {req.item}</span>
+                      <span>
+                        {req.type}: {req.item}
+                      </span>
                       <button
                         type="button"
                         className="remove-requirement"
@@ -358,9 +377,11 @@ const AdminCertifications = () => {
                 </div>
               </div>
               <div className="modal-actions">
-                <button type="submit" className="submit-button">Update</button>
-                <button 
-                  type="button" 
+                <button type="submit" className="submit-button">
+                  Update
+                </button>
+                <button
+                  type="button"
                   className="cancel-button"
                   onClick={() => setShowEditModal(false)}
                 >

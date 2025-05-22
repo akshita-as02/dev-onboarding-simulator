@@ -43,6 +43,12 @@
     color: var(--primary-color);
   }
   
+  .nav-link.active {
+    color: #007bff;
+    font-weight: bold;
+    border-bottom: 2px solid #007bff;
+  }
+  
   .dropdown-toggle {
     cursor: pointer;
     display: flex;
@@ -85,5 +91,10 @@
   .dropdown-item:hover {
     background-color: var(--bg-color);
     color: var(--primary-color);
+  }
+  
+  .dropdown-item.active {
+    background-color: #007bff;
+    color: white;
   }
   

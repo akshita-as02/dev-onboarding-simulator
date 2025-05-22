@@ -85,7 +85,7 @@
 
 // client/src/components/Navbar.js - Update with admin menu items
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import '../styles/Navbar.css';
 
@@ -101,45 +101,57 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo">
+        <NavLink to="/" className="navbar-logo">
           DevOnboard
-        </Link>
+        </NavLink>
         
         <ul className="nav-menu">
           {user ? (
             <>
               <li className="nav-item">
-                <Link to="/dashboard" className="nav-link">
+                <NavLink to="/dashboard" className={({ isActive }) => 
+                  isActive ? "nav-link active" : "nav-link"
+                }>
                   Dashboard
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-item">
-                <Link to="/challenges" className="nav-link">
+                <NavLink to="/challenges" className={({ isActive }) => 
+                  isActive ? "nav-link active" : "nav-link"
+                }>
                   Challenges
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-item">
-                <Link to="/deployments" className="nav-link">
+                <NavLink to="/deployments" className={({ isActive }) => 
+                  isActive ? "nav-link active" : "nav-link"
+                }>
                   Deployments
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-item">
-                <Link to="/troubleshoot" className="nav-link">
+                <NavLink to="/troubleshoot" className={({ isActive }) => 
+                  isActive ? "nav-link active" : "nav-link"
+                }>
                   Troubleshoot
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-item">
-                <Link to="/certifications" className="nav-link">
+                <NavLink to="/certifications" className={({ isActive }) => 
+                  isActive ? "nav-link active" : "nav-link"
+                }>
                   Certifications
-                </Link>
+                </NavLink>
               </li>
               
               {/* Admin menu items */}
               {user.role === 'admin' && (
                 <li className="nav-item">
-                  <Link to="/admin" className="nav-link admin-link">
+                  <NavLink to="/admin" className={({ isActive }) => 
+                    isActive ? "nav-link admin-link active" : "nav-link admin-link"
+                  }>
                     Admin
-                  </Link>
+                  </NavLink>
                 </li>
               )}
               
@@ -148,9 +160,11 @@ const Navbar = () => {
                   {user.name}
                 </div>
                 <div className="dropdown-menu">
-                  <Link to="/profile" className="dropdown-item">
+                  <NavLink to="/profile" className={({ isActive }) => 
+                    isActive ? "dropdown-item active" : "dropdown-item"
+                  }>
                     Profile
-                  </Link>
+                  </NavLink>
                   <button onClick={handleLogout} className="dropdown-item">
                     Logout
                   </button>
@@ -160,14 +174,18 @@ const Navbar = () => {
           ) : (
             <>
               <li className="nav-item">
-                <Link to="/login" className="nav-link">
+                <NavLink to="/login" className={({ isActive }) => 
+                  isActive ? "nav-link active" : "nav-link"
+                }>
                   Login
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-item">
-                <Link to="/register" className="nav-link">
+                <NavLink to="/register" className={({ isActive }) => 
+                  isActive ? "nav-link active" : "nav-link"
+                }>
                   Register
-                </Link>
+                </NavLink>
               </li>
             </>
           )}

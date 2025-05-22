@@ -445,4 +445,52 @@
 
 .error-container {
   color: #e74c3c;
+}
+
+/* Requirements List Styles */
+.requirements-list {
+  margin-bottom: 1rem;
+}
+
+.requirement-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.remove-requirement {
+  background: none;
+  border: none;
+  color: #f44336;
+  cursor: pointer;
+  font-size: 1.25rem;
+  padding: 0 0.5rem;
+}
+
+.add-requirement {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.add-requirement select,
+.add-requirement input {
+  flex: 1;
+}
+
+.add-requirement-btn {
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.add-requirement-btn:hover {
+  background-color: #1976D2;
 } 

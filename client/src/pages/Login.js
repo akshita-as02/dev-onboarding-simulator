@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import api from '../services/api';
+import api from '../utils/api';
 import { useAuth } from '../contexts/AuthContext';
 import '../styles/Auth.css';
 
@@ -30,8 +30,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formData.email || !formData.password) {
-      setError('Please fill in all fields');
+      if (!formData.email || !formData.password) {
+        setError('Please fill in all fields');
       return;
     }
     

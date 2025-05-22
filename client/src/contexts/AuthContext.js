@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-//import api from '../services/api';
-import api from '../utils/api';
+import api, { setAuthToken } from '../utils/api';
 
 const AuthContext = createContext();
 
@@ -23,8 +22,8 @@ export const AuthProvider = ({ children }) => {
           return;
         }
         
-        // Set auth header
-        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        // Set auth token
+        setAuthToken(token);
         
         // Get user data
         const response = await api.get('/api/auth/me');
@@ -33,7 +32,7 @@ export const AuthProvider = ({ children }) => {
       } catch (error) {
         // Clear storage on auth error
         console.error('Error loading user:', error);
-        localStorage.removeItem('token');
+        setAuthToken(null);
         setError(error.customMessage || 'Authentication error');
       } finally {
         setLoading(false);
@@ -51,10 +50,7 @@ export const AuthProvider = ({ children }) => {
       
       // Save token and user data
       const { token, user } = response.data.data;
-      localStorage.setItem('token', token);
-      
-      // Set auth header
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      setAuthToken(token);
       
       setUser(user);
       setError(null);
@@ -84,15 +80,14 @@ export const AuthProvider = ({ children }) => {
         token = credentials;
       } else {
         // Otherwise make the login API call
-      const response = await api.post('/api/auth/login', credentials);
+        const response = await api.post('/api/auth/login', credentials);
         const data = response.data.data;
         token = data.token;
         userData = data.user;
       }
       
-      // Always ensure token is stored
-      localStorage.setItem('token', token);
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      // Set auth token
+      setAuthToken(token);
       
       // If userData wasn't provided, fetch it
       if (!userData) {
@@ -118,12 +113,7 @@ export const AuthProvider = ({ children }) => {
   
   // Logout user
   const logout = () => {
-    // Remove token from storage
-    localStorage.removeItem('token');
-    
-    // Remove auth header
-    delete api.defaults.headers.common['Authorization'];
-    
+    setAuthToken(null);
     setUser(null);
     setError(null);
   };

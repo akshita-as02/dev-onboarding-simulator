@@ -7,10 +7,21 @@ const api = axios.create({
   },
 });
 
-// Add auth token to requests if available
+// Function to set auth token
+export const setAuthToken = (token) => {
+  if (token) {
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    localStorage.setItem('token', token);
+  } else {
+    delete api.defaults.headers.common['Authorization'];
+    localStorage.removeItem('token');
+  }
+};
+
+// Initialize token from localStorage
 const token = localStorage.getItem('token');
 if (token) {
-  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  setAuthToken(token);
 }
 
 // Response interceptor for handling token expiration
@@ -19,7 +30,7 @@ api.interceptors.response.use(
   (error) => {
     // Redirect to login if unauthorized
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
+      setAuthToken(null);
       window.location.href = '/login';
     }
     return Promise.reject(error);
