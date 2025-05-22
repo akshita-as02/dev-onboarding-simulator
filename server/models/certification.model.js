@@ -17,7 +17,7 @@ const certificationSchema = new mongoose.Schema({
   requirements: [{
     type: {
       type: String,
-      enum: ['challenge', 'deployment', 'troubleshooting'],
+      enum: ['Challenge', 'Deployment', 'Troubleshooting'],
       required: true,
     },
     item: {
